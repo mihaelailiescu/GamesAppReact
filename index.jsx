@@ -11,7 +11,19 @@ class Game extends React.Component {
             <p> {this.props.description}</p>
             <br></br>
             <img src={this.props.imageUrl} />
-        </div>
+            <button className="delete-btn"
+                onClick={() =>{
+                    //console.log('this is', this) --> era undefined - ce se intampla in spate cu obiectele Game?
+                    const url="https://games-app-siit.herokuapp.com";
+
+                    fetch(url + "/games/" + this.props.id, {
+                        method: "DELETE"
+                    }).then(r => r.text())
+                    .then(apiresponse => console.log(apiresponse));}
+                }
+            >Delete</button>
+            <button className="update-btn">Update</button>
+        </div >
         )
 
     }
@@ -40,8 +52,8 @@ class App extends React.Component {
         const { data } = this.state;
 
         let divs = data.map(gameJson => {
-
-            return (<Game title={gameJson.title} description={gameJson.description} imageUrl={gameJson.imageUrl} />);
+            console.log(gameJson._id)
+            return (<Game id={gameJson._id} title={gameJson.title} description={gameJson.description} imageUrl={gameJson.imageUrl} />);
         });
 
         console.log(divs)
